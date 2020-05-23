@@ -42,9 +42,9 @@ def button_key_handler(update: Update, context: CallbackContext):
         booked_key = return_key_by_user_id(user_id=user_id)
         reply_text = f'''
 Ключ для голосования можно взять только один раз. Многоразовый у нас только кот.\n\n
-Твой ключ-псевдоним на этот вечер: '{booked_key}'.\n\n
-Скопируй его в гугл форму для голосования.\n
-Ключи помогут сделать наше голосование честным и прозрачным.\n
+Твой ключ-псевдоним на этот вечер:   '{booked_key}'.\n\n
+Скопируй его в гугл форму для голосования.
+Ключи помогут сделать наше голосование честным и прозрачным.
 По ключу ты сможешь проверить как был учтен твой голос.'''
     else:
         random_id = get_random_free_id()
@@ -55,9 +55,9 @@ def button_key_handler(update: Update, context: CallbackContext):
         print(f'Список id свободных ключей: {get_free_key_ids()}')
         reply_text = f'''
 Забирай)\n\n
-Твой ключ-псевдоним на этот вечер: '{new_random_key}'.\n\n
-Скопируй его в гугл форму для голосования.\n
-Ключи помогут сделать наше голосование честным и прозрачным.\n
+Твой ключ-псевдоним на этот вечер:   '{new_random_key}'.\n\n
+Скопируй его в гугл форму для голосования.
+Ключи помогут сделать наше голосование честным и прозрачным.
 По ключу ты сможешь проверить как был учтен твой голос.'''
 
     update.message.reply_text(
@@ -75,7 +75,10 @@ def message_handler(update: Update, context: CallbackContext):
         name = 'anonymus'
 
     text = update.effective_message.text
-    reply_text = f'Привет, {name}!'
+    if check_user_has_key(user_id=update.effective_user.id):
+        reply_text = f'К сожалению, я не Алиса и многого не понимаю. Могу только ключи раздавать.'
+    else:
+        reply_text = f'Привет, {name}!'
 
     if text == button_cat:
         return button_cat_handler(update=update, context=context)
