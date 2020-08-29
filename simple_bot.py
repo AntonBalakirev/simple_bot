@@ -11,27 +11,27 @@ from common_utils import *
 
 TG_TOKEN = "1177822581:AAEOo_kUnjleDhvgvLyTsdBsADllYnskp4k"
 button_key = "Хочу ключ"
-button_cat = "Хочу кота"
+# button_cat = "Хочу кота"
 
 reply_markup = ReplyKeyboardMarkup(
     keyboard=[
         [
             KeyboardButton(text=button_key),
         ],
-        [
-            KeyboardButton(text=button_cat),
-        ],
+        # [
+        #     KeyboardButton(text=button_cat),
+        # ],
     ],
     resize_keyboard=True,
 )
 
 
-@log_error
-def button_cat_handler(update: Update, context: CallbackContext):
-    update.message.reply_text(
-        text='<^- _ -^>',
-        reply_markup=reply_markup
-    )
+# @log_error
+# def button_cat_handler(update: Update, context: CallbackContext):
+#     update.message.reply_text(
+#         text='<^- _ -^>',
+#         reply_markup=reply_markup
+#     )
 
 
 @log_error
@@ -41,7 +41,7 @@ def button_key_handler(update: Update, context: CallbackContext):
     if has_key:
         booked_key = return_key_by_user_id(user_id=user_id)
         reply_text = f'''
-Ключ для голосования можно взять только один раз. Многоразовый у нас только кот.\n\n
+Ключ для голосования можно взять только один раз.\n\n
 Твой ключ-псевдоним на этот вечер:   '{booked_key}'.\n\n
 Скопируй его в гугл форму для голосования.
 Ключи помогут сделать наше голосование честным и прозрачным.
@@ -50,6 +50,9 @@ def button_key_handler(update: Update, context: CallbackContext):
         random_id = get_random_free_id()
         book_free_key(user_id=user_id, id=random_id)
         new_random_key = return_key_by_id(id=random_id)
+        name = update.effective_user.name
+        file = open('name_keys.txt', 'a')
+        file.write(name + ' -> ' + new_random_key + '\n')
         print(f'Выбран случайный id: {random_id}')
         print(f'Получен ключ: {new_random_key}')
         print(f'Список id свободных ключей: {get_free_key_ids()}')
@@ -80,8 +83,8 @@ def message_handler(update: Update, context: CallbackContext):
     else:
         reply_text = f'Привет, {name}!'
 
-    if text == button_cat:
-        return button_cat_handler(update=update, context=context)
+    # if text == button_cat:
+    #     return button_cat_handler(update=update, context=context)
 
     if text == button_key:
         return button_key_handler(update=update, context=context)
